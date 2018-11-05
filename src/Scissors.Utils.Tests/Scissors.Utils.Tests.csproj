@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net462;netcoreapp2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Shouldly" Version="3.0.0" />
-    <PackageReference Include="xunit" Version="2.3.1" />
-    <PackageReference Include="xunit.analyzers" Version="0.9.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="Shouldly" Version="3.0.*" PrivateAssets="All" />
+    <PackageReference Include="xunit" Version="2.3.*" PrivateAssets="All" />
+    <PackageReference Include="xunit.analyzers" Version="0.10.*" PrivateAssets="All" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.*" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
