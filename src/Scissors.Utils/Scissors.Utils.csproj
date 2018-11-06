@@ -1,11 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+	</PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
+    <Authors>Manuel Grundner</Authors>
+		<Description>
+			Scissors common utility library
+		</Description>
+		 <PackageProjectUrl>https://github.com/biohazard999/Scissors.Utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/biohazard999/Scissors.Utils</RepositoryUrl>
+		<PackageLicenseUrl>https://github.com/biohazard999/Scissors.Utils/blob/master/LICENSE</PackageLicenseUrl>
+		<PackageIconUrl>https://raw.githubusercontent.com/biohazard999/Scissors.Utils/master/assets/logo.png</PackageIconUrl>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>../Scissors.Util.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	</PropertyGroup>
+	
   <ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="All" />
   </ItemGroup>
 

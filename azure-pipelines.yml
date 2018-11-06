@@ -1,0 +1,61 @@
+# ========================================================================
+# Perform linux and windows builds in parallel and then trigger a release build on success
+#
+# NOTE: you must have the following variables set in your pipeline as secret variables
+# GITHUB_TOKEN
+# NUGET_TOKEN
+#
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables
+# ========================================================================
+
+# Only trigger CI builds for the master branch, instead of every branch or tags.
+# You'll automatically be configured to build PRs, but you can't currently control
+# that from the YAML directly
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
+trigger:
+  branches:
+    include:
+      - master
+    exclude:
+      - tags/*
+      - refs/tags/*
+
+# Run the linux and windows jobs in parallel
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases
+jobs:
+  - template: azure-pipelines_common.yml
+    parameters:
+      name: Linux
+      image: ubuntu-16.04
+
+  - template: azure-pipelines_common.yml
+    parameters:
+      name: Windows
+      image: vs2017-win2016
+
+  # If the linux and windows jobs finish successfully
+  - job: Release
+    pool:
+      vmImage: ubuntu-16.04
+    dependsOn:
+      - Windows
+      - Linux
+    steps:
+      # Download the stored nuget package
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Downloading built nuget packages'
+        inputs:
+          downloadType: specific
+          itemPattern: 'drop/**'
+          downloadPath: artifacts
+
+      # Run the Cake 'Release' target which will trigger a release
+      # (Publish to nuget, create a release on github, update the CHANGELOG)
+      # if semantic-release detects any changes since the last release
+      - powershell: .\build.ps1 -target Release_if_changes_since_the_last_release
+        displayName: 'Cake 🍰 - Release if changes since the last release'
+        env:
+          GITHUB_TOKEN: $(GITHUB_TOKEN)
+          NUGET_TOKEN: $(NUGET_TOKEN)
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
